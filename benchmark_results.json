@@ -1,0 +1,63 @@
+{
+  "config": {
+    "grid_size": 10,
+    "num_colors": 16,
+    "max_actions": 1000,
+    "perception": {
+      "num_levels": 3,
+      "level1_hidden_dim": 128,
+      "level2_hidden_dim": 256,
+      "level3_hidden_dim": 512,
+      "prediction_threshold": 0.1,
+      "learning_rate": 0.001
+    },
+    "active_inference": {
+      "horizon": 3,
+      "num_samples": 100,
+      "temperature": 1.0,
+      "gamma": 0.99,
+      "complexity_weight": 0.1,
+      "free_energy_threshold": -0.5
+    },
+    "program_synthesis": {
+      "population_size": 100,
+      "generations": 50,
+      "crossover_prob": 0.8,
+      "mutation_prob": 0.2,
+      "tournament_size": 7,
+      "hall_of_fame_size": 5,
+      "parsimony_coefficient": 0.01,
+      "max_tree_depth": 10
+    },
+    "analogy": {
+      "max_graph_nodes": 1000,
+      "structural_match_threshold": 0.7,
+      "min_common_relations": 3,
+      "analogy_cache_size": 100
+    },
+    "sleep": {
+      "consolidation_interval": 100,
+      "compression_ratio": 0.1,
+      "similarity_threshold": 0.8,
+      "max_schemas": 1000
+    },
+    "ensemble": {
+      "population_size": 10,
+      "diversity_threshold": 0.3,
+      "exploration_rate": 0.1,
+      "voting_method": "weighted"
+    },
+    "memory": {
+      "max_episodic_memories": 10000,
+      "max_semantic_schemas": 1000,
+      "forgetting_rate": 0.01,
+      "retrieval_k": 5
+    },
+    "developmental_stages": [
+      100,
+      500,
+      1000,
+      5000
+    ],
+    "checkpoint_interval": 100,
+    "checkpoint_dir": 

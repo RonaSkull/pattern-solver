@@ -1,0 +1,59 @@
+{
+  "name": "ARC-AGI-3 V6.3",
+  "image": "mcr.microsoft.com/devcontainers/python:3.12",
+  
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "ms-azuretools.vscode-docker"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true
+      }
+    }
+  },
+  
+  "postCreateCommand": "pip install --upgrade pip && pip install arc-agi-sdk && pip install -e .",
+  
+  "postStartCommand": "git config --global --add safe.directory /workspaces/ARC_AGI_3",
+  
+  "remoteEnv": {
+    "ARC_API_KEY": "${localEnv:ARC_API_KEY}",
+    "ONLINE_MODE": "false"
+  },
+  
+  "forwardPorts": [8080, 8081],
+  
+  "portsAttributes": {
+    "8080": {
+      "label": "ARC Dashboard",
+      "onAutoForward": "notify"
+    },
+    "8081": {
+      "label": "Web Interface",
+      "onAutoForward": "silent"
+    }
+  },
+  
+  "runArgs": ["--init", "--privileged"],
+  
+  "mounts": [
+    "source=${localEnv:HOME}/.kaggle,target=/home/vscode/.kaggle,type=bind,consistency=cached"
+  ],
+  
+  "containerEnv": {
+    "DOCKER_BUILDKIT": "1",
+    "COMPOSE_DOCKER_CLI_BUILD": "1"
+  }
+}

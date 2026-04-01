@@ -1,0 +1,128 @@
+version: '3.8'
+
+x-common-vars: &common-vars
+  PYTHONUNBUFFERED: "1"
+  PYTHONHASHSEED: "0"
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  CHECKPOINT_DIR: /app/checkpoints
+  LOG_DIR: /app/logs
+  DATA_DIR: /app/data
+  ONLINE_MODE: ${ONLINE_MODE:-false}
+
+x-resource-limits: &resource-limits
+  resources:
+    limits:
+      memory: 4G
+      cpus: '2'
+    reservations:
+      memory: 1G
+      cpus: '1'
+
+services:
+  arc-validator:
+    build:
+      context: .
+      dockerfile: Dockerfile.arc-agi3
+      target: runtime
+    image: arc-agi3-validator:latest
+    container_name: arc-agi3-validator
+    environment:
+      <<: *common-vars
+      ARC_API_KEY: ${ARC_API_KEY}
+      VALIDATION_EPISODES: ${VALIDATION_EPISODES:-10}
+      VALIDATION_TIMEOUT: ${VALIDATION_TIMEOUT:-300}
+    volumes:
+      - ./logs:/app/logs:rw
+      - ./checkpoints:/app/checkpoints:rw
+      - ./data:/app/data:ro
+      - ./submission:/app/submission:rw
+    ports:
+      - "${DASHBOARD_PORT:-8080}:8080"
+    command: >
+      --validate
+      --episodes ${VALIDATION_EPISODES:-10}
+      --timeout ${VALIDATION_TIMEOUT:-300}
+      --output /app/logs/validation_report.json
+    deploy:
+      <<: *resource-limits
+    restart: ${RESTART_POLICY:-no}
+    healthcheck:
+      test: ["CMD", "python", "-c", "from arc_genetic_baby_v6_arc3_adapter import ARCAgentAdapter; print('OK')"]
+      interval: 60s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
+    labels:
+      - "com.arc-agi3.service=validator"
+      - "com.arc-agi3.version=6.3.0"
+
+  arc-dashboard:
+    image: python:3.12-slim
+    container_name: arc-agi3-dashboard
+    ports:
+      - "${DASHBOARD_WEB_PORT:-8081}:8081"
+    volumes:
+      - ./logs:/app/logs:ro
+      - ./scripts/dashboard.py:/app/dashboard.py:ro
+    working_dir: /app
+    environment:
+      <<: *common-vars
+      DASHBOARD_PORT: "8081"
+      LOG_DIR: "/app/logs"
+    command: >
+      bash -c "pip install --quiet flask plotly pandas && python dashboard.py --port 8081 --log-dir /app/logs"
+    depends_on:
+      arc-validator:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 512M
+          cpus: '0.5'
+    restart: unless-stopped
+    labels:
+      - "com.arc-agi3.service=dashboard"
+
+  arc-builder:
+    build:
+      context: .
+      dockerfile: Dockerfile.arc-agi3
+      target: builder
+    image: arc-agi3-builder:latest
+    container_name: arc-agi3-builder
+    volumes:
+      - .:/src:rw
+      - ./submission:/output:rw
+    working_dir: /src
+    environment:
+      <<: *common-vars
+      BUILD_VERSION: ${BUILD_VERSION:-v6.3-complete}
+      BUILD_OUTPUT: /output/submission_${BUILD_VERSION:-v6.3-complete}.zip
+    command: >
+      bash -c "
+        python -m venv /opt/venv &&
+        source /opt/venv/bin/activate &&
+        pip install -q -r requirements.txt &&
+        pip install -q arc-agi-sdk &&
+        pip install -e . &&
+        python scripts/build_submission_safe.py --version $$BUILD_VERSION --output $$BUILD_OUTPUT &&
+        echo 'Build completo: '$$BUILD_OUTPUT
+      "
+    deploy:
+      <<: *resource-limits
+    restart: "no"
+    labels:
+      - "com.arc-agi3.service=builder"
+
+networks:
+  arc-internal:
+    driver: bridge
+    internal: true
+  arc-public:
+    driver: bridge
+    internal: false

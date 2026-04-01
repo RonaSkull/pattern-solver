@@ -1,0 +1,32 @@
+{
+  "version": "5.0.0",
+  "build_date": "2026-03-31T21:51:55.236360",
+  "gaps_implemented": [
+    "Causal Discovery Engine",
+    "Symbolic Abstraction Module",
+    "Counterfactual World Model",
+    "Hierarchical Planner",
+    "Learned Attention Mechanism",
+    "Zero-Shot Meta-Learning"
+  ],
+  "files": [
+    "arc_genetic_baby_v4/__init__.py",
+    "arc_genetic_baby_v4/agent.py",
+    "arc_genetic_baby_v4/agent_v5.py",
+    "arc_genetic_baby_v4/config.py",
+    "arc_genetic_baby_v4/perception.py",
+    "arc_genetic_baby_v4/active_inference.py",
+    "arc_genetic_baby_v4/program_synthesis.py",
+    "arc_genetic_baby_v4/analogy.py",
+    "arc_genetic_baby_v4/sleep.py",
+    "arc_genetic_baby_v4/memory.py",
+    "arc_genetic_baby_v4/causal_discovery.py",
+    "arc_genetic_baby_v4/symbolic_abstraction.py",
+    "arc_genetic_baby_v4/counterfactual.py",
+    "arc_genetic_baby_v4/planner.py",
+    "arc_genetic_baby_v4/attention.py",
+    "arc_genetic_baby_v4/meta_learning.py",
+    "scripts/kaggle_submission_v5.py"
+  ],
+  "python_version": "3.11.7 (tags/v3.11.7:fa7a6f2, Dec  4 2023, 19:24:49) [MSC v.1937 64 bit (AMD64)]"
+}

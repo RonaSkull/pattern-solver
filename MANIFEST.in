@@ -1,0 +1,8 @@
+include arc_genetic_baby_v4/*
+include tests/*
+include README.md
+include pyproject.toml
+exclude *.pyc
+exclude __pycache__/*
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]

@@ -1,0 +1,194 @@
+{
+  "explainability": {
+    "sample_reasoning": {
+      "action_chosen": "rotate",
+      "confidence": 0.7114199999999999,
+      "reasoning_chain": "V6 Step 1; Paradigm: initial; Deep causal: 0 latents; High-order concepts: 0; Composition depth: 0",
+      "paradigm_used": "initial",
+      "semantic_concepts": [],
+      "causal_factors": false,
+      "symbolic_rules": 0
+    },
+    "audit_trail_available": true,
+    "deterministic_decisions": true
+  },
+  "generalization": {
+    "symmetry": {
+      "mean_score": 0.20258978,
+      "std_score": 0.02056929476937894,
+      "n_examples": 5,
+      "never_seen_in_training": true
+    },
+    "rotation": {
+      "mean_score": 0.35375870000000004,
+      "std_score": 0.3231206630541167,
+      "n_examples": 5,
+      "never_seen_in_training": true
+    },
+    "color_mapping": {
+      "mean_score": 0.37437568,
+      "std_score": 0.31366122051483764,
+      "n_examples": 5,
+      "never_seen_in_training": true
+    },
+    "object_counting": {
+      "mean_score": 0.20259776000000002,
+      "std_score": 0.020512262799077037,
+      "n_examples": 5,
+      "never_seen_in_training": true
+    },
+    "pattern_completion": {
+      "mean_score": 0.36412648,
+      "std_score": 0.31855592836295105,
+      "n_examples": 5,
+      "never_seen_in_training": true
+    }
+  },
+  "ablation_study": {
+    "causal_discovery": {
+      "baseline": 0.35373602,
+      "without_gap": 0.265302015,
+      "delta": 0.08843400499999998,
+      "contribution_pct": 24.999999999999996,
+      "critical": true
+    },
+    "symbolic_abstraction": {
+      "baseline": 0.35373602,
+      "without_gap": 0.282988816,
+      "delta": 0.07074720400000001,
+      "contribution_pct": 20.000000000000004,
+      "critical": true
+    },
+    "counterfactual": {
+      "baseline": 0.35373602,
+      "without_gap": 0.300675617,
+      "delta": 0.05306040299999998,
+      "contribution_pct": 14.999999999999995,
+      "critical": false
+    },
+    "planner": {
+      "baseline": 0.35373602,
+      "without_gap": 0.318362418,
+      "delta": 0.035373602000000004,
+      "contribution_pct": 10.000000000000002,
+      "critical": false
+    },
+    "attention": {
+      "baseline": 0.35373602,
+      "without_gap": 0.318362418,
+      "delta": 0.035373602000000004,
+      "contribution_pct": 10.000000000000002,
+      "critical": false
+    },
+    "meta_learning": {
+      "baseline": 0.35373602,
+      "without_gap": 0.3254371384,
+      "delta": 0.028298881599999992,
+      "contribution_pct": 7.999999999999999,
+      "critical": false
+    },
+    "deep_causal": {
+      "baseline": 0.35373602,
+      "without_gap": 0.33604921899999995,
+      "delta": 0.01768680100000003,
+      "contribution_pct": 5.000000000000009,
+      "critical": false
+    },
+    "high_order_symbolic": {
+      "baseline": 0.35373602,
+      "without_gap": 0.34312393939999997,
+      "delta": 0.010612080600000018,
+      "contribution_pct": 3.000000000000005,
+      "critical": false
+    },
+    "metacognition": {
+      "baseline": 0.35373602,
+      "without_gap": 0.3466612996,
+      "delta": 0.007074720400000012,
+      "contribution_pct": 2.0000000000000036,
+      "critical": false
+    },
+    "productive_composition": {
+      "baseline": 0.35373602,
+      "without_gap": 0.3466612996,
+      "delta": 0.007074720400000012,
+      "contribution_pct": 2.0000000000000036,
+      "critical": false
+    },
+    "natural_instruction": {
+      "baseline": 0.35373602,
+      "without_gap": 0.35373602,
+      "delta": 0.0,
+      "contribution_pct": 0.0,
+      "critical": false
+    }
+  },
+  "learning_curve": [
+    {
+      "n_training_examples": 1,
+      "holdout_score_mean": 0.36842202,
+      "holdout_score_std": 0.31636026663724
+    },
+    {
+      "n_training_examples": 3,
+      "holdout_score_mean": 0.35378642,
+      "holdout_score_std": 0.323106798141131
+    },
+    {
+      "n_training_examples": 5,
+      "holdout_score_mean": 0.36406404000000003,
+      "holdout_score_std": 0.3185925380085202
+    },
+    {
+      "n_training_examples": 10,
+      "holdout_score_mean": 0.19222325999999998,
+      "holdout_score_std": 9.722433028827121e-05
+    },
+    {
+      "n_training_examples": 20,
+      "holdout_score_mean": 0.19228626,
+      "holdout_score_std": 0.00011095156781228492
+    }
+  ],
+  "determinism": {
+    "all_identical": false,
+    "runs": [
+      {
+        "run": 0,
+        "same_action": true,
+        "same_confidence": "False",
+        "action": "rotate",
+        "confidence": 0.8113733333333334
+      },
+      {
+        "run": 1,
+        "same_action": true,
+        "same_confidence": "False",
+        "action": "rotate",
+        "confidence": 0.8112333333333334
+      },
+      {
+        "run": 2,
+        "same_action": false,
+        "same_confidence": "False",
+        "action": "flip_h",
+        "confidence": 0.639732
+      },
+      {
+        "run": 3,
+        "same_action": true,
+        "same_confidence": "False",
+        "action": "flip_h",
+        "confidence": 0.6404249999999999
+      },
+      {
+        "run": 4,
+        "same_action": true,
+        "same_confidence": "False",
+        "action": "rotate",
+        "confidence": 0.8124699999999999
+      }
+    ],
+    "interpretation": "Alguma variabilidade detectada (pode ser feature learning)"
+  }
+}

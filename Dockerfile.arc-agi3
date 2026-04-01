@@ -1,0 +1,59 @@
+# syntax=docker/dockerfile:1.4
+# ARC-AGI-3 Genetic Baby V6.3 - Production Validation Environment
+FROM python:3.12-slim as builder
+
+LABEL org.opencontainers.image.title="ARC-AGI-3 Genetic Baby V6.3"
+LABEL org.opencontainers.image.version="6.3.0"
+LABEL org.opencontainers.image.licenses="MIT"
+
+ARG DEBIAN_FRONTEND=noninteractive
+ARG PIP_NO_CACHE_DIR=1
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential git curl libgomp1 \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && python -m pip install --upgrade pip setuptools wheel
+
+WORKDIR /build
+COPY requirements.txt pyproject.toml setup.py ./
+
+RUN python -m venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+RUN pip install --upgrade pip && pip install -r requirements.txt
+RUN pip install --no-cache-dir "arc-agi-sdk>=1.0.0"
+
+FROM python:3.12-slim as runtime
+LABEL org.opencontainers.image.title="ARC-AGI-3 Genetic Baby V6.3"
+LABEL org.opencontainers.image.version="6.3.0"
+
+RUN groupadd -r arcuser && useradd -r -g arcuser arcuser
+RUN apt-get update && apt-get install -y --no-install-recommends libgomp1 ca-certificates \
+    && apt-get clean && rm -rf /var/lib/apt/lists/* \
+    && mkdir -p /app/logs /app/checkpoints /app/data \
+    && chown -R arcuser:arcuser /app
+
+COPY --from=builder /opt/venv /opt/venv
+ENV PATH="/opt/venv/bin:$PATH"
+WORKDIR /app
+
+COPY --chown=arcuser:arcuser arc_genetic_baby_v6/ ./arc_genetic_baby_v6/
+COPY --chown=arcuser:arcuser arc_genetic_baby_v6_arc3_adapter.py .
+COPY --chown=arcuser:arcuser scripts/ ./scripts/
+COPY --chown=arcuser:arcuser tests/ ./tests/
+COPY --chown=arcuser:arcuser pyproject.toml setup.py requirements.txt ./
+COPY --chown=arcuser:arcuser README.md LICENSE ./
+
+RUN pip install -e . --no-cache-dir
+
+ENV PYTHONUNBUFFERED=1 PYTHONHASHSEED=0 PYTHONDONTWRITEBYTECODE=1
+ENV ARC_API_KEY=${ARC_API_KEY} ONLINE_MODE=${ONLINE_MODE:-false}
+ENV LOG_LEVEL=${LOG_LEVEL:-INFO} CHECKPOINT_DIR=/app/checkpoints
+ENV LOG_DIR=/app/logs DATA_DIR=/app/data
+
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
+    CMD python -c "from arc_genetic_baby_v6_arc3_adapter import ARCAgentAdapter; from arc_genetic_baby_v6 import AgentConfig; adapter = ARCAgentAdapter(AgentConfig(grid_size=10, num_colors=8)); print('OK'); import sys; sys.exit(0)" || exit 1
+
+EXPOSE 8080
+USER arcuser
+ENTRYPOINT ["python", "-m", "arc_genetic_baby_v6_arc3_adapter"]
+CMD ["--validate", "--episodes", "10", "--output", "/app/logs/validation_report.json"]

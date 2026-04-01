@@ -1,0 +1,19 @@
+{
+  "interface": {
+    "episodes_tested": 0,
+    "episodes_completed": 0,
+    "avg_reward": 0.0,
+    "avg_steps": 0,
+    "invalid_actions": 0,
+    "errors": [
+      "Episode 0: 'dict' object has no attribute 'num_samples'\nTraceback (most recent call last):\n  File \"D:\\ARC_AGI_3\\scripts\\test_arc_integration.py\", line 83, in test_interface_compliance\n    result = agent.step(grid, actions)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ARC_AGI_3\\arc_genetic_baby_v4\\agent.py\", line 138, in step\n    ai_action, ai_info = self.active_inference.select_action(\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ARC_AGI_3\\arc_genetic_baby_v4\\active_inference.py\", line 330, in select_action\n    num_samples = self.config.num_samples\n                  ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'dict' object has no attribute 'num_samples'\n",
+      "Episode 1: 'dict' object has no attribute 'num_samples'\nTraceback (most recent call last):\n  File \"D:\\ARC_AGI_3\\scripts\\test_arc_integration.py\", line 83, in test_interface_compliance\n    result = agent.step(grid, actions)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ARC_AGI_3\\arc_genetic_baby_v4\\agent.py\", line 138, in step\n    ai_action, ai_info = self.active_inference.select_action(\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ARC_AGI_3\\arc_genetic_baby_v4\\active_inference.py\", line 330, in select_action\n    num_samples = self.config.num_samples\n                  ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'dict' object has no attribute 'num_samples'\n",
+      "Episode 2: 'dict' object has no attribute 'num_samples'\nTraceback (most recent call last):\n  File \"D:\\ARC_AGI_3\\scripts\\test_arc_integration.py\", line 83, in test_interface_compliance\n    result = agent.step(grid, actions)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ARC_AGI_3\\arc_genetic_baby_v4\\agent.py\", line 138, in step\n    ai_action, ai_info = self.active_inference.select_action(\n                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"D:\\ARC_AGI_3\\arc_genetic_baby_v4\\active_inference.py\", line 330, in select_action\n    num_samples = self.config.num_samples\n                  ^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: 'dict' object has no attribute 'num_samples'\n"
+    ]
+  },
+  "performance": null,
+  "config": {
+    "grid_size": 10,
+    "num_colors": 16
+  }
+}
